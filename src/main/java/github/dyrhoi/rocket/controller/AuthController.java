@@ -56,6 +56,7 @@ public class AuthController {
             claims.put("userId", String.valueOf(1));
 
             String jwt = jwtHelper.createJwtForClaims(login.getUsername(), claims);
+            System.out.println(jwt);
             return new LoginResult(jwt);
         }
 

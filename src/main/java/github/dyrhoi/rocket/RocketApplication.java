@@ -3,6 +3,7 @@ package github.dyrhoi.rocket;
 import github.dyrhoi.rocket.model.Role;
 import github.dyrhoi.rocket.model.User;
 import github.dyrhoi.rocket.repository.UserRepository;
+import github.dyrhoi.rocket.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,15 +30,24 @@ public class RocketApplication {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired RoleService roleService;
+
     @PostConstruct
     public void initUsers() {
             List<User> users = Stream.of(
                     User.builder()
-                            .authorities(Stream.of("USER").map(Role::new).collect(Collectors.toSet()))
+                            .authorities(roleService.getAllOrCreate("USER"))
                             .username("user")
                             .password("password")
                             .withEncoder(passwordEncoder)
                             .email("user@test.com")
+                            .build(),
+                    User.builder()
+                            .authorities(roleService.getAllOrCreate("USER", "ADMIN"))
+                            .username("admin")
+                            .password("password")
+                            .withEncoder(passwordEncoder)
+                            .email("admin@test.com")
                             .build()
             ).collect(Collectors.toList());
 
