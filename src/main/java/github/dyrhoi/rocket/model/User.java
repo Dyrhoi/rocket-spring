@@ -24,11 +24,11 @@ public class User {
 
     @NotEmpty
     @Email
-    @Column(unique = true)
+    @Column(unique = true, length = 20)
     private String email;
 
     @Size(min = 3, max=16)
-    @Column(unique = true)
+    @Column(unique = true, length = 20)
     private String username;
 
     @NotEmpty
@@ -36,7 +36,7 @@ public class User {
     @ToString.Exclude
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
         name = "USER_ROLES",
         joinColumns = {
@@ -47,4 +47,11 @@ public class User {
         }
     )
     private Set<Role> authorities;
+
+    public static class UserBuilder {
+        public UserBuilder withEncoder(PasswordEncoder encoder) {
+            this.password = encoder.encode(password);
+            return this;
+        }
+    }
 }
