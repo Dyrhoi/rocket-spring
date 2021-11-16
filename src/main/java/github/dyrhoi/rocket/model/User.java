@@ -3,6 +3,8 @@ package github.dyrhoi.rocket.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import github.dyrhoi.rocket.repository.RoleRepository;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,6 +53,16 @@ public class User {
         }
     )
     private Set<Role> authorities;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "createdAt")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updatedAt")
+    private Date updatedAt;
 
     @Component
     public static class UserBuilder {

@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rocket")
 public class RocketController {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     @GetMapping
     public String rocket() {
-        System.out.println(auth.getAuthorities());
         return "Hello";
     }
 
